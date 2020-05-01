@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "axios-response-mock",
+  "version": "0.0.1",
+  "description": "A library to be used with axios to selectively provide mock responses for any requests that are to be sent via the axios API.",
+  "keywords": [
+    "axios",
+    "mock"
+  ],
+  "homepage": "https://github.com/teetotum/axios-response-mock",
+  "bugs": "https://github.com/teetotum/axios-response-mock/issues",
+  "license": "MIT",
+  "author": "Martin Winkler",
+  "repository": "github:teetotum/axios-response-mock",
+  "scripts": {
+    "dev": "parcel src/index.js",
+    "build": "parcel build src/index.js"
+  },
+  "devDependencies": {
+    "parcel-bundler": "*",
+    "axios": "*"
+  },
+  "peerDependencies": {
+    "axios": "*"
+  }
+}
