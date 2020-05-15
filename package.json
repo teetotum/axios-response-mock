@@ -5,6 +5,8 @@
   "description": "A library to be used with axios to selectively provide mock responses for any requests that are to be sent via the axios API.",
   "keywords": [
     "axios",
+    "request",
+    "response",
     "mock"
   ],
   "homepage": "https://github.com/teetotum/axios-response-mock",
@@ -14,11 +16,19 @@
   "repository": "github:teetotum/axios-response-mock",
   "scripts": {
     "dev": "parcel src/index.js",
-    "build": "parcel build src/index.js"
+    "build": "parcel build src/index.js",
+    "test": "babel-tape-runner test/**/*.test.js"
+  },
+  "dependencies": {
+    "is-subset": "*",
+    "lodash": "*"
   },
   "devDependencies": {
     "parcel-bundler": "*",
-    "axios": "*"
+    "axios": "*",
+    "@babel/preset-env": "*",
+    "tape": "*",
+    "babel-tape-runner": "*"
   },
   "peerDependencies": {
     "axios": "*"
