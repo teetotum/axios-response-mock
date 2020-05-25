@@ -150,8 +150,8 @@ test(
 test(
   "function (data) response",
   withResponse(
-    () => 42 + 58,
-    (res) => res.data === 100 && res.status === 200
+    () => 'foobar',
+    (res) => res.data === 'foobar' && res.status === 200
   )
 );
 test(

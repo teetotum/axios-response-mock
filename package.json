@@ -1,6 +1,6 @@
 {
   "name": "axios-response-mock",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A library to be used with axios to selectively provide mock responses for any requests that are to be sent via the axios API.",
   "keywords": [
     "axios",

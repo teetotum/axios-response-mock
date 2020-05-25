@@ -9,6 +9,7 @@ module.exports = {
     filename: 'axios-response-mock.js',
     library: 'axiosResponseMock',
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
   externals: ['axios', 'is-subset', 'lodash/isEqual'],
   //externals: Object.keys(package.dependencies),

@@ -7,7 +7,7 @@ axios-response-mock uses the [axios adapter](https://github.com/axios/axios/tree
 
 # Usage
 
-Use as any other npm package. If you need the mock only when runninng automated tests add 'axios-response-mock' to your devDependencies. If you need the mock during runtime add 'axios-response-mock' to your dependencies.
+Use as any other npm package. Typically you would add 'axios-response-mock' to your devDependencies.
 
 ```
 import axiosResponseMock from 'axios-response-mock';
@@ -18,14 +18,14 @@ import foobarResponse from './foobar.response.json'
 // POST requests to any path containing /users/create
 // GET requests when url parameter 'ID' is set to 'foobar'
 // PUT requests when body contains an 'address' object
-// PURGE requests
+// PURGE requests, delay response by 1000 miliseconds
 
 axiosResponseMock.
   .get('http://example.org/users', { total: 2, users: [{ name: 'Bruce Wayne' }, { name: 'Peter Parker' }] } )
   .post(/[/]users[/]create/, 201)
   .get({ query: { ID: 'foobar' }}, foobarResponse)
   .put({ body: { address: {} }, matchPartialBody: true }, 200)
-  .mock({ method: 'purge' }, 401)
+  .mock({ method: 'purge' }, 401, { delay: 1000 })
 ```
 
 The default instance of the mock (i.e. the imported axiosResponseMock in the example above) is automatically associated with the default axios instance (i.e. the result of an import of 'axios'). Therefore any routes that are prepared on the default mock can only match requests that are made via the default axios instance.
@@ -78,6 +78,8 @@ body,                 // Object, deep-equal by default, but can be subset-match 
 matchPartialBody,     // boolean flag to trigger subset-match for body
 query,                // Object (hash) with key-value-pairs of type String (subset-match), case-sensitive for keys and values
 repeat,               // number of times the route can match, after the number is reached the route will not match anymore
+response              // can be used when the response argument to .mock() is omitted
+delay                 // response delay in miliseconds
 
 // config object for functionMatcher has this structure:
 // {
