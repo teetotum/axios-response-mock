@@ -72,43 +72,43 @@ is optional
 
 supported properties in matcher object:
 
-url,                 // String (exact match), URL (exact match), RegEx (full regex functionality)
+url,                // String (exact match), URL (exact match), RegEx (full regex functionality)
 
-functionMatcher,     // (config) => boolean
+functionMatcher,    // (config) => boolean
 
-method,              // String (case-insensitive)
+method,             // String (case-insensitive)
 
-headers,             // Object (hash) with key-value-pairs of type String (subset-match),
-                        header keys are case-insensitive
+headers,            // Object (hash) with key-value-pairs of type String (subset-match),
+                       header keys are case-insensitive
 
-body,                // Object, deep-equal by default, but can be subset-match with the flag matchPartialBody
+body,               // Object, deep-equal by default, but can be subset-match with the flag matchPartialBody
 
-matchPartialBody,    // boolean flag to trigger subset-match for body
+matchPartialBody,   // boolean flag to trigger subset-match for body
 
-query,               // Object (hash) with key-value-pairs of type String (subset-match),
-                        case-sensitive for keys and values
+query,              // Object (hash) with key-value-pairs of type String (subset-match),
+                       case-sensitive for keys and values
 
-repeat,              // number of times the route can match,
-                        after the number is reached the route will not match anymore
+repeat,             // number of times the route can match,
+                       after the number is reached the route will not match anymore
 
-response,            // can be used when the response argument to .mock() is omitted
-                        (same supported argument types)
+response,           // can be used when the response argument to .mock() is omitted
+                       (same supported argument types)
 
-delay,               // number: response delay in miliseconds
+delay,              // number: response delay in miliseconds
 
 
-// config object argument for functionMatcher has this structure:
-// {
-//     url: 'http://example.org',
-//     method: 'get',
-//     params: { ID: 12345, foo: 'bar' },
-//     data: '{ "firstName" : "Fred", "lastName" : "Flintstone" }',
-//     headers: {
-//         Accept: 'application/json, text/plain, */*',
-//         'Content-Type': 'application/json;charset=utf-8',
-//         'X-Custom-Header': 'foobar',
-//     },
-// }
+config object argument for functionMatcher has this structure:
+{
+    url: 'http://example.org',
+    method: 'get',
+    params: { ID: 12345, foo: 'bar' },
+    data: '{ "firstName" : "Fred", "lastName" : "Flintstone" }',
+    headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Custom-Header': 'foobar',
+    },
+}
 ```
 
 ```
