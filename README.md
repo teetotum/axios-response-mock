@@ -8,6 +8,8 @@ axios-response-mock uses the [axios adapter](https://github.com/axios/axios/tree
 # Usage
 
 Use as any other npm package. Typically you would add 'axios-response-mock' to your devDependencies.
+Define any routes you want to intercept, using any combination of matcher options.
+A route is matched when all provided matcher options are matched.
 
 ```
 import axiosResponseMock from 'axios-response-mock';
@@ -58,30 +60,44 @@ Ends the matching and interception of requests, restores the original axios adap
 
 ```
 .mock(matcher, response, options)
-matcher: String, URL, RegEx, Function, Object
+matcher: String | URL | RegEx | Function | Object
 can not be omitted
 
-response: String, Number, Object, Function
+response: String | Number | Object | Function
 can only be omitted when 'response' property is set in matcher object
 
 options: Object
 is optional
 
 
-
 supported properties in matcher object:
-url,                  // String (exact match), URL (exact match), RegEx (full regex functionality)
-functionMatcher,      // (config) => boolean
-method,               // String (case-insensitive)
-headers,              // Object (hash) with key-value-pairs of type String (subset-match), header keys are case-insensitive
-body,                 // Object, deep-equal by default, but can be subset-match with the flag matchPartialBody
-matchPartialBody,     // boolean flag to trigger subset-match for body
-query,                // Object (hash) with key-value-pairs of type String (subset-match), case-sensitive for keys and values
-repeat,               // number of times the route can match, after the number is reached the route will not match anymore
-response              // can be used when the response argument to .mock() is omitted
-delay                 // response delay in miliseconds
 
-// config object for functionMatcher has this structure:
+url,                 // String (exact match), URL (exact match), RegEx (full regex functionality)
+
+functionMatcher,     // (config) => boolean
+
+method,              // String (case-insensitive)
+
+headers,             // Object (hash) with key-value-pairs of type String (subset-match),
+                        header keys are case-insensitive
+
+body,                // Object, deep-equal by default, but can be subset-match with the flag matchPartialBody
+
+matchPartialBody,    // boolean flag to trigger subset-match for body
+
+query,               // Object (hash) with key-value-pairs of type String (subset-match),
+                        case-sensitive for keys and values
+
+repeat,              // number of times the route can match,
+                        after the number is reached the route will not match anymore
+
+response,            // can be used when the response argument to .mock() is omitted
+                        (same supported argument types)
+
+delay,               // number: response delay in miliseconds
+
+
+// config object argument for functionMatcher has this structure:
 // {
 //     url: 'http://example.org',
 //     method: 'get',
