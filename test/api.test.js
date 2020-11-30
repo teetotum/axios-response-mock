@@ -147,6 +147,12 @@ test(
   "number 201 (status) response",
   withResponse(201, (res) => res.status === 201)
 );
+
+test(
+  "status code 204 response with matching message",
+  withResponse(204, (res) => res.statusText === "No Content")
+);
+
 test(
   "function (data) response",
   withResponse(

@@ -21,7 +21,7 @@ import foobarResponse from './foobar.response.json'
 // PURGE requests, delay response by 1000 miliseconds
 
 axiosResponseMock.
-  .get('http://example.org/users', { total: 2, users: [{ name: 'Bruce Wayne' }, { name: 'Peter Parker' }] } )
+  .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] } )
   .post(/[/]users[/]create/, 201)
   .get({ query: { ID: 'foobar' }}, foobarResponse)
   .put({ body: { address: {} }, matchPartialBody: true }, 200)
@@ -44,7 +44,7 @@ axiosResponseMock.create(exampleApi).post(/* ... */)
 # API documentation
 
 The API is modeled after the fetch-mock API, which has shown to be simple and clear, yet at the same time flexible, powerful, and expressive.
-Currently the methods availabe are a subset of the fetch-mock methods.
+Currently the functions availabe are a subset of the fetch-mock functions.
 
 ```
 .create(axiosInstance)
@@ -96,7 +96,7 @@ delay                 // response delay in miliseconds
 ```
 
 ```
-// the following functions are just shortcuts
+// the following functions are just shortcuts for the .mock() function
 
 .get(matcher, response, options) {
   return this.mock(matcher, response, { ...options, method: "GET" });

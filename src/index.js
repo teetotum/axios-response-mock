@@ -2,6 +2,7 @@ import axios from 'axios';
 import isSubset from 'is-subset';
 import isEqual from 'lodash/isEqual';
 import { isHeadersSubset } from './headers';
+import HTTPStatusCode from 'http-status-code';
 
 
 //import createError from 'axios/lib/core/createError';
@@ -15,14 +16,11 @@ const wrapError = (config, response) => {
   return error;
 }
 
-
-
-//todo: status code to status text mapping
 const responseFromStatusCode = (statusCode, config) => (
   {
     data: null,
     status: statusCode,
-    statusText: 'TODO',
+    statusText: HTTPStatusCode.getMessage(statusCode),
     headers: config.headers,
     config: config,
     request: config.request,
