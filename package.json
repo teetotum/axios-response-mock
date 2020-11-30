@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "is-subset": "0.1.1",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "http-status-code": "2.1.0"
   },
   "devDependencies": {
