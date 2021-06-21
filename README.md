@@ -11,7 +11,7 @@ Use as any other npm package. Typically you would add 'axios-response-mock' to y
 Define any routes you want to intercept, using any combination of matcher options.
 A route is matched when all provided matcher options are matched.
 
-```
+```js
 import axiosResponseMock from 'axios-response-mock';
 import foobarResponse from './foobar.response.json'
 
