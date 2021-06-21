@@ -13,7 +13,7 @@ A route is matched when all provided matcher options are matched.
 
 ```js
 import axiosResponseMock from 'axios-response-mock';
-import foobarResponse from './foobar.response.json'
+import foobarResponse from './foobar.response.json';
 
 // provide mock responses for:
 // GET requests to http://example.org/users
@@ -22,7 +22,7 @@ import foobarResponse from './foobar.response.json'
 // PUT requests when body contains an 'address' object
 // PURGE requests, delay response by 1000 miliseconds
 
-axiosResponseMock.
+axiosResponseMock
   .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] } )
   .post(/[/]users[/]create/, 201)
   .get({ query: { ID: 'foobar' }}, foobarResponse)
