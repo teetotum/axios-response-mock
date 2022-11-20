@@ -22,7 +22,7 @@ import foobarResponse from './foobar.response.json'
 // PUT requests when body contains an 'address' object
 // PURGE requests, delay response by 1000 miliseconds
 
-axiosResponseMock.
+axiosResponseMock
   .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] } )
   .post(/[/]users[/]create/, 201)
   .get({ query: { ID: 'foobar' }}, foobarResponse)
