@@ -1,7 +1,7 @@
 # axios-response-mock
 
 The axios-response-mock is intended to be for [axios](https://github.com/axios/axios) what [fetch-mock](https://github.com/wheresrhys/fetch-mock) is for the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-The mock can be configured to selectively interecept requests that are made via axios and answer those intercepted requests with prepared mock responses. Unmatched requests will -per default- be processed normally.
+The mock can be configured to selectively intercept requests that are made via axios and answer those intercepted requests with prepared mock responses. Unmatched requests will -per default- be processed normally.
 
 axios-response-mock uses the [axios adapter](https://github.com/axios/axios/tree/master/lib/adapters) mechanism.
 
@@ -11,9 +11,9 @@ Use as any other npm package. Typically you would add 'axios-response-mock' to y
 Define any routes you want to intercept, using any combination of matcher options.
 A route is matched when all provided matcher options are matched.
 
-```
+```js
 import axiosResponseMock from 'axios-response-mock';
-import foobarResponse from './foobar.response.json'
+import foobarResponse from './foobar.response.json';
 
 // provide mock responses for:
 // GET requests to http://example.org/users
