@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- response statusText is now set according to statusCode
+- response `statusText` is now set according to `statusCode`
+- added `module` key to package.json
 
 ## 0.0.4 - 2020-06-09
 
 ### Fixed
 
-- removed experimental 'module' key from package.json, was causing issues when package was used with older browsers
+- removed experimental `module` key from package.json, was causing issues when package was used with older browsers
 
 ## 0.0.3 - 2020-06-08
 
