@@ -2,19 +2,13 @@
 
 ## must
 
-- ensure newest Chrome + axios 1.0.0 works with release candidate of axios-response-mock
+ensure newest Chrome + release candidate of axios-response-mock works with the following axios versions
+(for each: test success case (status 200) and test failure case (status 400)):
 
-  - test success case (status 200)
-  - test failure case (status 400)
-
-- ensure newest Chrome + axios 0.27.2 works with release candidate of axios-response-mock
-
-  - test success case (status 200)
-  - test failure case (status 400)
-
-- ensure newest Chrome + axios 0.26.1 works with release candidate of axios-response-mock
-  - test success case (status 200)
-  - test failure case (status 400)
+- axios 1.1.3
+- axios 1.0.0
+- axios 0.27.2
+- axios 0.26.1
 
 ## easy but optional
 
@@ -23,9 +17,8 @@
 
 ## nice-to-have
 
-- ensure IE11 + axios 0.26.1 works with release candidate of axios-response-mock
-  - test success case (status 200)
-  - test failure case (status 400)
-- ensure IE11 + axios 0.27.2 works with release candidate of axios-response-mock
-  - test success case (status 200)
-  - test failure case (status 400)
+- remove automatic association of mock instance with default axios instance
+
+- ensure IE11 + release candidate of axios-response-mock works with the following axios versions:
+  - axios 0.27.2
+  - axios 0.26.1

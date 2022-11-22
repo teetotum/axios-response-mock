@@ -1,6 +1,6 @@
 {
   "name": "axios-response-mock",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A library to be used with axios to selectively provide mock responses for any requests that are to be sent via the axios API.",
   "keywords": [
     "axios",
@@ -12,6 +12,7 @@
   "bugs": "https://github.com/teetotum/axios-response-mock/issues",
   "license": "MIT",
   "main": "dist/axios-response-mock.js",
+  "module": "src/index.js",
   "author": "Martin Winkler",
   "repository": "github:teetotum/axios-response-mock",
   "scripts": {
@@ -21,17 +22,16 @@
   },
   "dependencies": {
     "is-subset": "0.1.1",
-    "lodash": "4.17.19",
-    "http-status-code": "2.1.0"
+    "lodash": "4.17.20"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",
     "@babel/preset-env": "7.9.6",
-    "webpack": "4.43.0",
-    "webpack-cli": "3.3.11",
+    "webpack": "5.75.0",
+    "webpack-cli": "5.0.0",
     "core-js": "3.1.4",
     "babel-loader": "8.1.0",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "tape": "5.0.0",
     "babel-tape-runner": "3.0.0"
   },

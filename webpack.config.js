@@ -1,5 +1,4 @@
 const path = require('path');
-//const package = require('./package.json');
 
 module.exports = {
   mode: 'production',
@@ -7,13 +6,15 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'axios-response-mock.js',
-    library: 'axiosResponseMock',
-    libraryTarget: 'umd',
     globalObject: 'this',
+    clean: true,
+    library: {
+      name: 'axiosResponseMock',
+      type: 'umd',
+    },
   },
-  externals: ['axios', 'is-subset', 'lodash/isEqual'],
-  //externals: Object.keys(package.dependencies),
+  externals: ['axios', /^axios\/.+$/, 'is-subset', 'lodash', /^lodash\/.+$/],
   module: {
-    rules: [{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }],
+    rules: [{ test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' }],
   },
 };

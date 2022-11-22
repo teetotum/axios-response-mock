@@ -2,41 +2,26 @@ import axios from 'axios';
 import isSubset from 'is-subset';
 import isEqual from 'lodash/isEqual';
 import { isHeadersSubset } from './headers';
-import HTTPStatusCode from 'http-status-code';
+import { httpstatus } from './httpstatus';
+import settle from 'axios/lib/core/settle';
 
+const responseFromStatusCode = (statusCode, config) => ({
+  data: null,
+  status: statusCode,
+  statusText: httpstatus[statusCode],
+  headers: config.headers,
+  config: config,
+  request: config.request,
+});
 
-//import createError from 'axios/lib/core/createError';
-// todo: can we import createError from axios/core ?
-const wrapError = (config, response) => {
-  const message = `Request failed with HTTP status code ${response.status}`
-  const error = new Error(message);
-  error.config = config;
-  error.response = response;
-  error.isAxiosError = true;
-  return error;
-}
-
-const responseFromStatusCode = (statusCode, config) => (
-  {
-    data: null,
-    status: statusCode,
-    statusText: HTTPStatusCode.getMessage(statusCode),
-    headers: config.headers,
-    config: config,
-    request: config.request,
-  }
-);
-
-const responseWithData = (data, config) => (
-  {
-    data: data,
-    status: 200,
-    statusText: 'OK',
-    headers: config.headers,
-    config: config,
-    request: config.request,
-  }
-);
+const responseWithData = (data, config) => ({
+  data: data,
+  status: 200,
+  statusText: 'OK',
+  headers: config.headers,
+  config: config,
+  request: config.request,
+});
 
 const deriveResponse = (responseDeclaration, config) => {
   switch (typeof responseDeclaration) {
@@ -49,9 +34,8 @@ const deriveResponse = (responseDeclaration, config) => {
     case 'object':
       // todo: distinguish between objects that represent DATA, or are PROMISE interface, or are RESPONSE interface
       return responseWithData(responseDeclaration, config);
-    default: throw new Error(
-      `type ${typeof responseDeclaration} of response declaration is not supported`,
-    );
+    default:
+      throw new Error(`type ${typeof responseDeclaration} of response declaration is not supported`);
   }
 };
 
@@ -99,10 +83,7 @@ const matchesAllCriteria = (route, config) => {
   }
 
   // check method
-  if (
-    route.criteria.method &&
-    route.criteria.method.toLowerCase() !== config.method.toLowerCase()
-  ) {
+  if (route.criteria.method && route.criteria.method.toLowerCase() !== config.method.toLowerCase()) {
     return false;
   }
 
@@ -110,8 +91,7 @@ const matchesAllCriteria = (route, config) => {
   // check url
   if (route.criteria.url) {
     if (typeof route.criteria.url === 'string') {
-      if (new URL(route.criteria.url).href !== new URL(config.url).href)
-        return false;
+      if (new URL(route.criteria.url).href !== new URL(config.url).href) return false;
     } else {
       if (route.criteria.url instanceof RegExp) {
         if (!route.criteria.url.test(config.url)) return false;
@@ -163,27 +143,19 @@ class Mock {
 
   _respond(matchedRoute, config) {
     const response = deriveResponse(matchedRoute.response, config, matchedRoute.responseOptions);
-    const statusOK = config.validateStatus(response.status);
     const delay = matchedRoute.responseOptions.delay;
 
-    if (delay) return new Promise((resolve, reject) => setTimeout(() => statusOK ? resolve(response) : reject(wrapError(config, response)), delay));
-
-
-    if (statusOK)
-      return Promise.resolve(response);
-    else
-      return Promise.reject(wrapError(config, response));
+    return new Promise((resolve, reject) => {
+      if (delay) setTimeout(() => settle(resolve, reject, response), delay);
+      else settle(resolve, reject, response);
+    });
   }
 
   _processRequest(config) {
-    const matchedRoute = this.preparedRoutes.find((route) =>
-      matchesAllCriteria(route, config),
-    );
+    const matchedRoute = this.preparedRoutes.find((route) => matchesAllCriteria(route, config));
 
-    if (matchedRoute)
-      return this._respond(matchedRoute, config);
-    else
-      return this.originalAdapter(config);
+    if (matchedRoute) return this._respond(matchedRoute, config);
+    else return this.originalAdapter(config);
   }
 
   create(axiosInstance) {
@@ -195,8 +167,7 @@ class Mock {
   }
 
   _addRoute(response, options) {
-    if (!response)
-      throw new Error(`argument 'response' invalid: argument is ${response}`);
+    if (!response) throw new Error(`argument 'response' invalid: argument is ${response}`);
 
     const {
       delay,
@@ -254,10 +225,8 @@ class Mock {
         this._addRoute(response, { ...options, functionMatcher: matcher });
         break;
       case 'object':
-        if (matcher instanceof RegExp)
-          this._addRoute(response, { ...options, url: matcher });
-        else if (matcher instanceof URL)
-          this._addRoute(response, { ...options, url: matcher });
+        if (matcher instanceof RegExp) this._addRoute(response, { ...options, url: matcher });
+        else if (matcher instanceof URL) this._addRoute(response, { ...options, url: matcher });
         else
           this._addRoute(response || matcher.response, {
             ...options,
@@ -265,9 +234,7 @@ class Mock {
           });
         break;
       default:
-        throw new Error(
-          `first argument 'matcher' of type ${typeof matcher} unsupported`,
-        );
+        throw new Error(`first argument 'matcher' of type ${typeof matcher} unsupported`);
     }
 
     return this;

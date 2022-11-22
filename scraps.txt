@@ -1,0 +1,60 @@
+
+//import createError from 'axios/lib/core/createError';
+// todo: can we import createError from axios/core ?
+const wrapError = (config, response) => {
+  const message = `Request failed with HTTP status code ${response.status}`;
+  const error = new Error(message);
+  error.config = config;
+  error.response = response;
+  error.isAxiosError = true;
+  return error;
+};
+
+
+const settle = (resolve, reject, response) => {
+  var validateStatus = response.config.validateStatus;
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(wrapError(response.config, response));
+  }
+};
+
+
+_respond(matchedRoute, config) {
+    const response = deriveResponse(matchedRoute.response, config, matchedRoute.responseOptions);
+    const delay = matchedRoute.responseOptions.delay;
+
+    return new Promise((resolve, reject) => {
+      if (delay) setTimeout(() => settle(resolve, reject, response), delay);
+      else settle(resolve, reject, response);
+    });
+
+    // const statusOK = config.validateStatus(response.status);
+    // const delay = matchedRoute.responseOptions.delay;
+
+    // if (delay)
+    // return new Promise(
+    //   (resolve, reject) => setTimeout(() => statusOK ? resolve(response) : reject(wrapError(config, response)), delay)
+    // );
+
+    // if (statusOK)
+    //   return Promise.resolve(response);
+    // else
+    //   return Promise.reject(wrapError(config, response));
+  }
+
+
+
+
+  //externalsType: 'umd',
+  //externals: ['axios', 'axios/lib/core/settle', 'is-subset', 'lodash/isEqual'],
+  // externals: {
+  //   axios: {
+  //     commonjs: 'axios',
+  //     amd: 'Axios',
+  //   },
+  //   'is-subset': 'is-subset',
+  //   'lodash/isEqual': 'lodash/isEqual',
+  // },
+  // https://stackoverflow.com/questions/57255680/why-do-i-have-to-list-my-peerdependencies-as-externals-in-the-webpack-config-whe
