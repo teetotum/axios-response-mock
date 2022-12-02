@@ -5,9 +5,9 @@ The mock can be configured to selectively intercept requests that are made via a
 
 axios-response-mock uses the [axios adapter](https://github.com/axios/axios/tree/master/lib/adapters) mechanism.
 
-# Usage
+## Usage
 
-Use as any other npm package. Typically you would add 'axios-response-mock' to your devDependencies.
+Use as any other npm package. Typically you would add `axios-response-mock` to your `devDependencies`.
 Define any routes you want to intercept, using any combination of matcher options.
 A route is matched when all provided matcher options are matched.
 
@@ -23,27 +23,27 @@ import foobarResponse from './foobar.response.json';
 // PURGE requests, delay response by 1000 miliseconds
 
 axiosResponseMock
-  .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] } )
+  .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] })
   .post(/[/]users[/]create/, 201)
-  .get({ query: { ID: 'foobar' }}, foobarResponse)
+  .get({ query: { ID: 'foobar' } }, foobarResponse)
   .put({ body: { address: {} }, matchPartialBody: true }, 200)
-  .mock({ method: 'purge' }, 401, { delay: 1000 })
+  .mock({ method: 'purge' }, 401, { delay: 1000 });
 ```
 
 The default instance of the mock (i.e. the imported axiosResponseMock in the example above) is automatically associated with the default axios instance (i.e. the result of an import of 'axios'). Therefore any routes that are prepared on the default mock can only match requests that are made via the default axios instance.
 
 If your project makes use of other axios instances like in the following example you can associate a new mock instance by calling the `.create()` function.
 
-```
+```js
 import axios from 'axios';
 import axiosResponseMock from 'axios-response-mock';
 
 const exampleApi = axios.create({ baseURL: 'http://example.org/api/v1' });
 
-axiosResponseMock.create(exampleApi).post(/* ... */)
+axiosResponseMock.create(exampleApi).post(/* ... */);
 ```
 
-# API documentation
+## API
 
 The API is modeled after the fetch-mock API, which has shown to be simple and clear, yet at the same time flexible, powerful, and expressive.
 Currently the functions availabe are a subset of the fetch-mock functions.
@@ -146,9 +146,3 @@ config object argument for functionMatcher has this structure:
   return this.mock(() => true, response, options);
 }
 ```
-
-# TODOs
-
-- add support for axios versions below 0.13.0
-- add more API documentation
-- add comparison between axios-mock-adapter and axios-response-mock, showing differences, explaining why people should use the latter

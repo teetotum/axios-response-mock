@@ -20,5 +20,10 @@ ensure newest Chrome + release candidate of axios-response-mock works with the f
 - remove automatic association of mock instance with default axios instance
 
 - ensure IE11 + release candidate of axios-response-mock works with the following axios versions:
+
   - axios 0.27.2
   - axios 0.26.1
+
+- add support for axios versions below 0.13.0
+- add more API documentation
+- add comparison between axios-mock-adapter and axios-response-mock, showing differences, explaining why people should use the latter

@@ -16,7 +16,6 @@
   "author": "Martin Winkler",
   "repository": "github:teetotum/axios-response-mock",
   "scripts": {
-    "dev": "webpack",
     "build": "webpack",
     "test": "babel-tape-runner test/**/*.test.js"
   },
