@@ -74,3 +74,9 @@ instance.defaults.adapter = () => {
   });
 };
 instance.get("test").catch(() => {});
+
+import { axiosVersion_below_0_13_0 } from "../src/checkversion";
+test("axiosVersion_below_0_13_0", (assert) => {
+  assert.plan(1);
+  assert.false(axiosVersion_below_0_13_0);
+});
