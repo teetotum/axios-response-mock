@@ -26,10 +26,6 @@ export class Mock {
     else return this.originalAdapter(config);
   }
 
-  create(axiosInstance) {
-    return new Mock(axiosInstance);
-  }
-
   restore() {
     this.axiosInstance.defaults.adapter = this.originalAdapter;
   }

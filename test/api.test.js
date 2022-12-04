@@ -1,7 +1,7 @@
 import test from 'tape';
 import axios from 'axios';
 import isEqual from 'lodash/isEqual';
-import responseMock from '../src/index';
+import responseMockBase from '../src/index';
 
 const pinocchioData = {
   name: 'Pinocchio',
@@ -19,7 +19,7 @@ const pinocchioData = {
 
 const withMatcher = (matcher) => async (assert) => {
   const axiosInstance = axios.create();
-  const mockInstance = responseMock.create(axiosInstance);
+  const mockInstance = responseMockBase.create(axiosInstance);
   assert.plan(2);
   const expectedResponseData = 'lorem ipsum';
   mockInstance.mock(matcher, expectedResponseData);
@@ -51,7 +51,7 @@ const withMatcher = (matcher) => async (assert) => {
 
 const withResponse = (response, isAsExpected) => async (assert) => {
   const axiosInstance = axios.create();
-  const mockInstance = responseMock.create(axiosInstance);
+  const mockInstance = responseMockBase.create(axiosInstance);
   assert.plan(1);
 
   mockInstance.mock('http://example.org', response);

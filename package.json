@@ -13,6 +13,7 @@
   "license": "MIT",
   "main": "dist/axios-response-mock.js",
   "module": "src/index.js",
+  "sideEffects": false,
   "author": "Martin Winkler",
   "repository": "github:teetotum/axios-response-mock",
   "scripts": {
@@ -30,7 +31,7 @@
     "webpack-cli": "5.0.0",
     "core-js": "3.1.4",
     "babel-loader": "8.1.0",
-    "axios": "0.26.1",
+    "axios": "*",
     "tape": "5.0.0",
     "babel-tape-runner": "3.0.0"
   },
