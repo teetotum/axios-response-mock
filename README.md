@@ -7,13 +7,17 @@ axios-response-mock uses the [axios adapter](https://github.com/axios/axios/tree
 
 ## Usage
 
-Use as any other npm package. Typically you would add `axios-response-mock` to your `devDependencies`.
+Add the `axios-response-mock` library to your `package.json` and install via [npm](https://www.npmjs.com/package/axios-response-mock).
+Instantiate and connect a `Mock` to any axios instance you want to be able to intercept.
 Define any routes you want to intercept, using any combination of matcher options.
 A route is matched when all provided matcher options are matched.
 
 ```js
-import axiosResponseMock from 'axios-response-mock';
+import mockBase from 'axios-response-mock';
 import foobarResponse from './foobar.response.json';
+
+// instantiate and connect a Mock to the default axios instance
+const mock = mockBase.create();
 
 // provide mock responses for:
 // GET requests to http://example.org/users
@@ -22,7 +26,7 @@ import foobarResponse from './foobar.response.json';
 // PUT requests when body contains an 'address' object
 // PURGE requests, delay response by 1000 miliseconds
 
-axiosResponseMock
+mock
   .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] })
   .post(/[/]users[/]create/, 201)
   .get({ query: { ID: 'foobar' } }, foobarResponse)
@@ -30,28 +34,50 @@ axiosResponseMock
   .mock({ method: 'purge' }, 401, { delay: 1000 });
 ```
 
-The default instance of the mock (i.e. the imported axiosResponseMock in the example above) is automatically associated with the default axios instance (i.e. the result of an import of 'axios'). Therefore any routes that are prepared on the default mock can only match requests that are made via the default axios instance.
+The default export from `axios-response-mock` is the library's `base` object that can be used to `.create()` a `Mock` instance.
+Importing `axios-response-mock` (without calling any functions) is side-effect-free (see https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free).
 
-If your project makes use of other axios instances like in the following example you can associate a new mock instance by calling the `.create()` function.
+Calling `.create()` without any arguments connects the `Mock` instance to the default axios instance (the one that is obtained via `import axios from 'axios'`).
+If you want to connect the mock to any other axios instance you have to provide it as an argument to `.create(axiosInstance)`.
+
+After you obtained a `Mock` instance you can use a variety of functions to specify which requests and conditions you want to intercept.
+
+Routes that are prepared on any specific mock can only match and intercept requests that are made via the connected axios instance that was used to create the mock.
+
+So if your project makes use of an axios instance `exampleApi` like in the following example you can associate a new mock instance by calling `.create(exampleApi)`.
 
 ```js
 import axios from 'axios';
-import axiosResponseMock from 'axios-response-mock';
+import mockBase from 'axios-response-mock';
 
 const exampleApi = axios.create({ baseURL: 'http://example.org/api/v1' });
 
-axiosResponseMock.create(exampleApi).post(/* ... */);
+const mock = mockBase.create(exampleApi);
+mock.post(/* ... */); // prepare to intercept a POST request
 ```
 
 ## API
 
 The API is modeled after the fetch-mock API, which has shown to be simple and clear, yet at the same time flexible, powerful, and expressive.
-Currently the functions availabe are a subset of the fetch-mock functions.
+Currently the functions availabe are a subset of the fetch-mock functions ([more about that](https://github.com/teetotum/axios-response-mock/discussions/2)).
+
+### base object
+
+Obtained via `import mockBase from 'axios-response-mock'` the base object allows you to create and connect a new `Mock` instance.
 
 ```
-.create(axiosInstance)
-Creates a new axios-response-mock instance, associated with the axiosInstance
+const mock = mockBase.create()
+Creates a new Mock instance, associated with the default axios instance
 ```
+
+```
+const mock = mockBase.create(axiosInstance)
+Creates a new Mock instance, associated with axiosInstance
+```
+
+### Mock instance
+
+The following functions are available on a `Mock` instance
 
 ```
 .restore()
@@ -109,6 +135,9 @@ config object argument for functionMatcher has this structure:
         'X-Custom-Header': 'foobar',
     },
 }
+
+Be aware that the 'data' field is stringified. If your request data is JSON you will need
+to call JSON.parse(config.data) before you can make any assessments of it.
 ```
 
 ```

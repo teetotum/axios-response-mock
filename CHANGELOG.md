@@ -5,12 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.0.5 - 2022-11-22 // hitherto unpublished
+## 0.1.0 - 2022-12-05
+
+### Added
+
+- added `module` key to package.json
+- added `sideEffects: false` to package.json
+
+### Changed
+
+- the default export is no longer a `Mock` instance (wired to the default `axios` instance) but instead is the library's `base` object that can be used to `.create()` a `Mock` instance. So importing `axios-response-mock` (without calling any functions) is side-effect-free (see https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free)
 
 ### Fixed
 
 - response `statusText` is now set according to `statusCode`
-- added `module` key to package.json
+- mock error responses now use either `Error` or `AxiosError` instances (corresponding to the used axios version)
 
 ## 0.0.4 - 2020-06-09
 

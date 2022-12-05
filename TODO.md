@@ -4,6 +4,8 @@ related: https://github.com/axios/axios/pull/5162
 
 ## must
 
+- cleanup dependencies, devDependencies, and peerDependencies
+
 ensure newest Chrome + release candidate of axios-response-mock works with the following axios versions
 
 - axios 1.2.0 (latest)
@@ -12,15 +14,6 @@ ensure newest Chrome + release candidate of axios-response-mock works with the f
 - axios 0.26.1 (last version to use `Error` instead of `AxiosError`)
 
 (for each: test mocked success case (status 200) and test mocked failure case (status 400)):
-
-## easy but optional
-
-- increase to version 0.1.0
-- add MIT license text file
-- remove automatic association of mock instance with default axios instance
-- update readme / api documentation
-- add sideEffectFree: true
-- refactor code structure
 
 ## nice-to-have
 
