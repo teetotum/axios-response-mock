@@ -4,8 +4,6 @@ related: https://github.com/axios/axios/pull/5162
 
 ## must
 
-- cleanup dependencies, devDependencies, and peerDependencies
-
 ensure newest Chrome + release candidate of axios-response-mock works with the following axios versions
 
 - axios 1.2.0 (latest)
