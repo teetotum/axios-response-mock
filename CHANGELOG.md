@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - you can now define a response with `status`, `statusText`, `data`, `headers`
 
+### Fixed
+
+- `matcher.query` is now checked against both: parameters set via axios request `options.params` and URL parameters defined directly in the URL string via `?foo=bar`
+
 ## 0.1.0 - 2022-12-05
 
 ### Added

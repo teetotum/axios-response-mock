@@ -2,6 +2,19 @@ import isSubset from 'is-subset';
 import isEqual from 'lodash/isEqual';
 import { isHeadersSubset } from './headers';
 
+// configParams are in the form of:
+// {
+//    ID: 12345,
+//    foo: 'bar',
+// },
+//
+// and urlSearchParams are URLSearchParams
+const combineParams = (configParams, urlSearchParams) => {
+  const entries = [...urlSearchParams.entries()];
+  const obj = Object.fromEntries(entries);
+  return { ...configParams, ...obj };
+};
+
 export const matchesAllCriteria = (route, config) => {
   // cheap checks happen before expensive checks
   // (heuristically, because we can't know for sure if for example
@@ -73,7 +86,7 @@ export const matchesAllCriteria = (route, config) => {
 
   // check query
   if (route.criteria.query) {
-    if (!isSubset(config.params, route.criteria.query)) return false;
+    if (!isSubset(combineParams(config.params, new URL(config.url).searchParams), route.criteria.query)) return false;
   }
 
   // check body

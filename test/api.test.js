@@ -16,6 +16,36 @@ const pinocchioData = {
     },
   ],
 };
+const withMatcherAndParams = (matcher) => async (assert) => {
+  const axiosInstance = axios.create();
+  const mockInstance = responseMockBase.create(axiosInstance);
+  assert.plan(2);
+  const expectedResponseData = 'lorem ipsum';
+  mockInstance.mock(matcher, expectedResponseData);
+
+  try {
+    const response = await axiosInstance.request({
+      url: 'http://example.org?foo=bar',
+      method: 'post',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'X-Custom-Header': 'foobar',
+      },
+      params: {
+        ID: 12345,
+      },
+      data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone',
+      },
+    });
+    assert.equal(response.data, expectedResponseData);
+    assert.equal(response.status, 200);
+    assert.end();
+  } catch (e) {
+    assert.fail(e);
+  }
+};
 
 const withMatcher = (matcher) => async (assert) => {
   const axiosInstance = axios.create();
@@ -119,11 +149,21 @@ test(
 );
 
 test(
-  'query matcher',
+  'query matcher: options.params',
   withMatcher({
     query: { foo: 'bar' },
   }),
 );
+
+test(
+  'query matcher: URL parameters',
+  withMatcherAndParams({
+    query: { foo: 'bar' },
+  }),
+);
+
+test('string matcher with URL parameters', withMatcherAndParams('http://example.org?foo=bar'));
+test('URL matcher with URL parameters', withMatcherAndParams(new URL('http://example.org?foo=bar')));
 
 test(
   'string (data) response',
