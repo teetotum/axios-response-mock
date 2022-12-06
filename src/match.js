@@ -2,14 +2,20 @@ import isSubset from 'is-subset';
 import isEqual from 'lodash/isEqual';
 import { isHeadersSubset } from './headers';
 
+const toURL = (urlString) => {
+  const location = self.location;
+  const baseUrl = location.protocol + '//' + location.hostname + '/';
+  return new URL(urlString, baseUrl);
+};
+
 // configParams are in the form of:
 // {
 //    ID: 12345,
 //    foo: 'bar',
 // },
 //
-// and urlSearchParams are URLSearchParams
-const combineParams = (configParams, urlSearchParams) => {
+const combineParams = (configParams, configUrl) => {
+  const urlSearchParams = toURL(configUrl).searchParams;
   const entries = [...urlSearchParams.entries()];
   const obj = Object.fromEntries(entries);
   return { ...configParams, ...obj };
@@ -67,14 +73,14 @@ export const matchesAllCriteria = (route, config) => {
   // check url
   if (route.criteria.url) {
     if (typeof route.criteria.url === 'string') {
-      if (new URL(route.criteria.url).href !== new URL(config.url).href) return false;
+      if (toURL(route.criteria.url).href !== toURL(config.url).href) return false;
     } else {
       if (route.criteria.url instanceof RegExp) {
         if (!route.criteria.url.test(config.url)) return false;
       }
 
       if (route.criteria.url instanceof URL) {
-        if (route.criteria.url.href !== new URL(config.url).href) return false;
+        if (route.criteria.url.href !== toURL(config.url).href) return false;
       }
     }
   }
@@ -86,7 +92,7 @@ export const matchesAllCriteria = (route, config) => {
 
   // check query
   if (route.criteria.query) {
-    if (!isSubset(combineParams(config.params, new URL(config.url).searchParams), route.criteria.query)) return false;
+    if (!isSubset(combineParams(config.params, config.url), route.criteria.query)) return false;
   }
 
   // check body
