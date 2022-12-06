@@ -175,3 +175,86 @@ to call JSON.parse(config.data) before you can make any assessments of it.
   return this.mock(() => true, response, options);
 }
 ```
+
+#### Response
+
+The response can be defined in several ways:
+
+- String
+
+  ```js
+  mock.get(/example.com/, 'hello world');
+  ```
+
+  When matched: will return a success response with the string as payload data
+
+  ```js
+  {
+    status: 200,
+    statusText: 'OK',
+    data: 'hello world',
+  }
+  ```
+
+- Number
+
+  ```js
+  mock.get(/example.com/, 404);
+  ```
+
+  When matched: will return a response with a status corresponding to the number
+
+  ```js
+  {
+    status: 404,
+    statusText: 'Not Found',
+  }
+  ```
+
+- Object: payload data
+
+  ```js
+  mock.get(/example.com/, { name: 'Richard Roe', registeredSince: '2010-06-12' });
+  ```
+
+  When matched: will return a success response with the object as payload data
+
+  ```js
+  {
+    status: 200,
+    statusText: 'OK',
+    data: { name: 'Richard Roe', registeredSince: '2010-06-12' },
+  }
+  ```
+
+- Object: response
+  An object is treated as a response when it has `status` and `statusText` properties.
+  Thus you can provide arbitrary `status`, `statusText`, `data`, `headers` used for the mock response.
+
+  ```js
+  mock.get(/example.com/, { status: 200, statusText: 'OK', headers: { 'X-custom-encabulator': '37b' } });
+  ```
+
+  When matched: will return a response as specified
+
+  ```js
+  {
+    status: 200,
+    statusText: 'OK',
+    headers: { 'X-custom-encabulator': '37b' },
+  }
+  ```
+
+- Function
+
+  ```js
+  mock.get(/example.com/, (config) => (Math.random() < 0.5 ? 200 : 404));
+  ```
+
+  When matched: will call the function; the return value of the function determines how a response is derived from it:
+
+  - string,
+  - number,
+  - object as payload data,
+  - object as response,
+  - or even another function

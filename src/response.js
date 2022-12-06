@@ -81,6 +81,17 @@ const responseWithData = (data, config) => ({
   request: config.request,
 });
 
+const ensureAxiosResponseProps = (response, config) => ({
+  data: 'data' in response ? response.data : null,
+  status: response.status,
+  statusText: response.statusText,
+  headers: 'headers' in response ? response.headers : config.headers,
+  config: config,
+  request: config.request,
+});
+
+const isResponse = (obj) => 'status' in obj && 'statusText' in obj;
+
 export const deriveResponse = (responseDeclaration, config) => {
   switch (typeof responseDeclaration) {
     case 'function':
@@ -91,7 +102,9 @@ export const deriveResponse = (responseDeclaration, config) => {
       return responseWithData(responseDeclaration, config);
     case 'object':
       // todo: distinguish between objects that represent DATA, or are PROMISE interface, or are RESPONSE interface
-      return responseWithData(responseDeclaration, config);
+      return isResponse(responseDeclaration)
+        ? ensureAxiosResponseProps(responseDeclaration, config)
+        : responseWithData(responseDeclaration, config);
     default:
       throw new Error(`type ${typeof responseDeclaration} of response declaration is not supported`);
   }
