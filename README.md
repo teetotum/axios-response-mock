@@ -232,7 +232,7 @@ The response can be defined in several ways:
   Thus you can provide arbitrary `status`, `statusText`, `data`, `headers` used for the mock response.
 
   ```js
-  mock.get(/example.com/, { status: 200, statusText: 'OK', headers: { 'X-custom-encabulator': '37b' } });
+  mock.get(/example.com/, { status: 200, statusText: 'OK', headers: { 'X-custom-encabulator': '7B' } });
   ```
 
   When matched: will return a response as specified
@@ -241,7 +241,7 @@ The response can be defined in several ways:
   {
     status: 200,
     statusText: 'OK',
-    headers: { 'X-custom-encabulator': '37b' },
+    headers: { 'X-custom-encabulator': '7B' },
   }
   ```
 
