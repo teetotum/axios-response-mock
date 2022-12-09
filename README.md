@@ -196,7 +196,7 @@ The response can be defined in several ways:
   }
   ```
 
-- Number
+- <a name="number-response"></a>Number
 
   ```js
   mock.get(/example.com/, 404);
@@ -211,7 +211,7 @@ The response can be defined in several ways:
   }
   ```
 
-- Object: payload data
+- <a name="payload-object-response"></a>Object: payload data
 
   ```js
   mock.get(/example.com/, { name: 'Richard Roe', registeredSince: '2010-06-12' });
@@ -227,7 +227,7 @@ The response can be defined in several ways:
   }
   ```
 
-- Object: response
+- <a name="response-object-response"></a>Object: response
   An object is treated as a response when it has `status` and `statusText` properties.
   Thus you can provide arbitrary `status`, `statusText`, `data`, `headers` used for the mock response.
 
@@ -245,7 +245,7 @@ The response can be defined in several ways:
   }
   ```
 
-- Function
+- <a name="function-response"></a>Function
 
   ```js
   mock.get(/example.com/, (config) => (Math.random() < 0.5 ? 200 : 404));
@@ -254,7 +254,7 @@ The response can be defined in several ways:
   When matched: will call the function; the return value of the function determines how a response is derived from it:
 
   - [string](#string-response),
-  - number,
-  - object as payload data,
-  - object as response,
-  - or even another function
+  - [number](#number-response),
+  - [object as payload data](#payload-object-response),
+  - [object as response](#response-object-response),
+  - or even another [function](#function-response)
