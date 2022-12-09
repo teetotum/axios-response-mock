@@ -70,6 +70,38 @@ test(
   ),
 );
 
+test(
+  "'query' matcher correctly deals with multiple URL params with the same name - in URL string",
+  testcase(
+    { query: { foo: '2' } },
+    {
+      url: 'http://example.org?foo=1&?foo=2',
+      method: 'post',
+      headers: { Accept: 'application/json, text/plain, */*' },
+      params: { foo: '3' },
+      data: { some: 'thing' },
+    },
+    'mockresponse',
+    (res) => res.data === 'mockresponse',
+  ),
+);
+
+test(
+  "'query' matcher correctly deals with multiple URL params with the same name - in axios 'params' options",
+  testcase(
+    { query: { foo: '3' } },
+    {
+      url: 'http://example.org?foo=1&?foo=2',
+      method: 'post',
+      headers: { Accept: 'application/json, text/plain, */*' },
+      params: { foo: '3' },
+      data: { some: 'thing' },
+    },
+    'mockresponse',
+    (res) => res.data === 'mockresponse',
+  ),
+);
+
 const withMatcherAndParams = (matcher) => async (assert) => {
   const axiosInstance = axios.create();
   const mockInstance = responseMockBase.create(axiosInstance);
