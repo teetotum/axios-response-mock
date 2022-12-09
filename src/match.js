@@ -1,16 +1,28 @@
+import axios from 'axios';
 import isSubset from 'is-subset';
 import isEqual from 'lodash/isEqual';
 import { isHeadersSubset } from './headers';
 
-const toURL = (urlString) => {
+const getBaseURL = (axiosInstance) => {
   // global setting:
   // axios.defaults.baseURL
   //
   // instance setting:
-  // instance.defaults.baseURL
-  const location = self.location;
-  const baseUrl = location.protocol + '//' + location.hostname + '/';
-  return new URL(urlString, baseUrl);
+  // axiosInstance.defaults.baseURL
+
+  // todo: matcher should not match if relative URL is used but no baseURL is set
+
+  // todo: write testcases for relative URL matching
+
+  return axiosInstance.defaults.baseURL ?? axios.defaults.baseURL;
+
+  // old but wrong solution:
+  // const location = self.location;
+  // const baseUrl = location.protocol + '//' + location.hostname + '/';
+};
+
+const toURL = (urlString, axiosInstance) => {
+  return new URL(urlString, getBaseURL(axiosInstance));
 };
 
 // configParams are in the form of:
@@ -19,8 +31,8 @@ const toURL = (urlString) => {
 //    foo: 'bar',
 // },
 //
-const combineParams = (configParams = {}, configUrl) => {
-  const urlSearchParams = toURL(configUrl).searchParams;
+const combineParams = (configParams = {}, configUrl, axiosInstance) => {
+  const urlSearchParams = toURL(configUrl, axiosInstance).searchParams;
   const configUrlParamsEntries = [...urlSearchParams.entries()];
   const configParamsEntries = Object.entries(configParams);
   return [...configUrlParamsEntries, ...configParamsEntries];
@@ -29,7 +41,7 @@ const combineParams = (configParams = {}, configUrl) => {
 const isArraySubset = (superset, subset) =>
   subset.every(([k, v]) => Boolean(superset.find(([entryKey, entryValue]) => k === entryKey && v === entryValue)));
 
-export const matchesAllCriteria = (route, config) => {
+export const matchesAllCriteria = (route, config, axiosInstance) => {
   // cheap checks happen before expensive checks
   // (heuristically, because we can't know for sure if for example
   // the functionMatcher is more expensive than the url matcher Regex of Cthulhu)
@@ -81,14 +93,14 @@ export const matchesAllCriteria = (route, config) => {
   // check url
   if (route.criteria.url) {
     if (typeof route.criteria.url === 'string') {
-      if (toURL(route.criteria.url).href !== toURL(config.url).href) return false;
+      if (toURL(route.criteria.url, axiosInstance).href !== toURL(config.url, axiosInstance).href) return false;
     } else {
       if (route.criteria.url instanceof RegExp) {
         if (!route.criteria.url.test(config.url)) return false;
       }
 
       if (route.criteria.url instanceof URL) {
-        if (route.criteria.url.href !== toURL(config.url).href) return false;
+        if (route.criteria.url.href !== toURL(config.url, axiosInstance).href) return false;
       }
     }
   }
@@ -100,7 +112,8 @@ export const matchesAllCriteria = (route, config) => {
 
   // check query
   if (route.criteria.query) {
-    if (!isArraySubset(combineParams(config.params, config.url), Object.entries(route.criteria.query))) return false;
+    if (!isArraySubset(combineParams(config.params, config.url, axiosInstance), Object.entries(route.criteria.query)))
+      return false;
   }
 
   // check body

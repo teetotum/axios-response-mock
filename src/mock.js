@@ -20,7 +20,7 @@ export class Mock {
   }
 
   _processRequest(config) {
-    const matchedRoute = this.preparedRoutes.find((route) => matchesAllCriteria(route, config));
+    const matchedRoute = this.preparedRoutes.find((route) => matchesAllCriteria(route, config, this.axiosInstance));
 
     if (matchedRoute) return this._respond(matchedRoute, config);
     else return this.originalAdapter(config);

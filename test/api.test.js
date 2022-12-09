@@ -3,13 +3,13 @@ import axios from 'axios';
 import isEqual from 'lodash/isEqual';
 import responseMockBase from '../src/index';
 
-const g = global || self;
+// const g = global || self;
 
-g.self = g.self || {};
-g.self.location = g.self.location || {
-  protocol: 'http:',
-  hostname: 'example.org',
-};
+// g.self = g.self || {};
+// g.self.location = g.self.location || {
+//   protocol: 'http:',
+//   hostname: 'example.org',
+// };
 
 const pinocchioData = {
   name: 'Pinocchio',
