@@ -180,7 +180,7 @@ to call JSON.parse(config.data) before you can make any assessments of it.
 
 The response can be defined in several ways:
 
-- String
+- <a name="string-response"></a>String
 
   ```js
   mock.get(/example.com/, 'hello world');
@@ -253,7 +253,7 @@ The response can be defined in several ways:
 
   When matched: will call the function; the return value of the function determines how a response is derived from it:
 
-  - string,
+  - [string](#string-response),
   - number,
   - object as payload data,
   - object as response,

@@ -3,6 +3,11 @@ import isEqual from 'lodash/isEqual';
 import { isHeadersSubset } from './headers';
 
 const toURL = (urlString) => {
+  // global setting:
+  // axios.defaults.baseURL
+  //
+  // instance setting:
+  // instance.defaults.baseURL
   const location = self.location;
   const baseUrl = location.protocol + '//' + location.hostname + '/';
   return new URL(urlString, baseUrl);
