@@ -75,7 +75,7 @@ test(
   testcase(
     { query: { foo: '2' } },
     {
-      url: 'http://example.org?foo=1&?foo=2',
+      url: 'http://example.org?foo=1&foo=2',
       method: 'post',
       headers: { Accept: 'application/json, text/plain, */*' },
       params: { foo: '3' },
@@ -91,7 +91,7 @@ test(
   testcase(
     { query: { foo: '3' } },
     {
-      url: 'http://example.org?foo=1&?foo=2',
+      url: 'http://example.org?foo=1&foo=2',
       method: 'post',
       headers: { Accept: 'application/json, text/plain, */*' },
       params: { foo: '3' },

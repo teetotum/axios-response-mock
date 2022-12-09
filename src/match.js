@@ -14,12 +14,15 @@ const toURL = (urlString) => {
 //    foo: 'bar',
 // },
 //
-const combineParams = (configParams, configUrl) => {
+const combineParams = (configParams = {}, configUrl) => {
   const urlSearchParams = toURL(configUrl).searchParams;
-  const entries = [...urlSearchParams.entries()];
-  const obj = Object.fromEntries(entries);
-  return { ...configParams, ...obj };
+  const configUrlParamsEntries = [...urlSearchParams.entries()];
+  const configParamsEntries = Object.entries(configParams);
+  return [...configUrlParamsEntries, ...configParamsEntries];
 };
+
+const isArraySubset = (superset, subset) =>
+  subset.every(([k, v]) => Boolean(superset.find(([entryKey, entryValue]) => k === entryKey && v === entryValue)));
 
 export const matchesAllCriteria = (route, config) => {
   // cheap checks happen before expensive checks
@@ -92,7 +95,7 @@ export const matchesAllCriteria = (route, config) => {
 
   // check query
   if (route.criteria.query) {
-    if (!isSubset(combineParams(config.params, config.url), route.criteria.query)) return false;
+    if (!isArraySubset(combineParams(config.params, config.url), Object.entries(route.criteria.query))) return false;
   }
 
   // check body
