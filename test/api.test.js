@@ -54,6 +54,22 @@ test(
   ),
 );
 
+test(
+  "'query' matcher matches URL params in the axios 'params' options",
+  testcase(
+    { query: { foo: 'bar' } },
+    {
+      url: 'http://example.org',
+      method: 'post',
+      headers: { Accept: 'application/json, text/plain, */*' },
+      params: { foo: 'bar' },
+      data: { some: 'thing' },
+    },
+    'mockresponse',
+    (res) => res.data === 'mockresponse',
+  ),
+);
+
 const withMatcherAndParams = (matcher) => async (assert) => {
   const axiosInstance = axios.create();
   const mockInstance = responseMockBase.create(axiosInstance);
