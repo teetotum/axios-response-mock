@@ -24,6 +24,36 @@ const pinocchioData = {
     },
   ],
 };
+
+const testcase = (matcher, request, response, assertResponseIsAsExpected, axiosOptions) => async (assert) => {
+  const axiosInstance = axios.create(axiosOptions);
+  const mockInstance = responseMockBase.create(axiosInstance);
+  assert.plan(1);
+  mockInstance.mock(matcher, response);
+  try {
+    const res = await axiosInstance.request(request);
+    assert.true(assertResponseIsAsExpected(res));
+    assert.end();
+  } catch (e) {
+    assert.fail(e);
+  }
+};
+
+test(
+  "'query' matcher matches URL params in the request URL string",
+  testcase(
+    { query: { foo: 'bar' } },
+    {
+      url: 'http://example.org?foo=bar',
+      method: 'post',
+      headers: { Accept: 'application/json, text/plain, */*' },
+      data: { some: 'thing' },
+    },
+    'mockresponse',
+    (res) => res.data === 'mockresponse',
+  ),
+);
+
 const withMatcherAndParams = (matcher) => async (assert) => {
   const axiosInstance = axios.create();
   const mockInstance = responseMockBase.create(axiosInstance);
