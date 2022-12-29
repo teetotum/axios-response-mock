@@ -1,6 +1,6 @@
 {
   "name": "axios-response-mock",
-  "version": "0.2.2",
+  "version": "0.2.2-alpha.1",
   "description": "A library to be used with axios to selectively provide mock responses for any requests that are to be sent via the axios API.",
   "keywords": [
     "axios",
@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "is-subset": "0.1.1",
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "axios": "1.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

@@ -13,7 +13,7 @@ module.exports = {
       type: 'umd',
     },
   },
-  externals: ['axios', /^axios\/.+$/, 'is-subset', 'lodash', /^lodash\/.+$/],
+  externals: ['axios', 'is-subset', 'lodash', /^lodash\/.+$/],
   module: {
     rules: [{ test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' }],
   },

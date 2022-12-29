@@ -1,5 +1,6 @@
 import { deriveResponse, settle } from './response';
 import { matchesAllCriteria } from './match';
+import adapters from 'axios/lib/adapters/adapters';
 
 export class Mock {
   constructor(axiosInstance) {
@@ -23,7 +24,14 @@ export class Mock {
     const matchedRoute = this.preparedRoutes.find((route) => matchesAllCriteria(route, config, this.axiosInstance));
 
     if (matchedRoute) return this._respond(matchedRoute, config);
-    else return this.originalAdapter(config);
+    else {
+      if (typeof this.originalAdapter === 'function') {
+        return this.originalAdapter(config);
+      } else {
+        const defaultAdapter = adapters.getAdapter(this.originalAdapter);
+        return defaultAdapter(config);
+      }
+    }
   }
 
   restore() {
