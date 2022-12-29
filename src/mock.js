@@ -1,6 +1,6 @@
 import { deriveResponse, settle } from './response';
 import { matchesAllCriteria } from './match';
-import adapters from 'axios/lib/adapters/adapters';
+import adapters from '../node_modules/axios/lib/adapters/adapters';
 
 export class Mock {
   constructor(axiosInstance) {

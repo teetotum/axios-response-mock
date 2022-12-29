@@ -15,6 +15,13 @@ module.exports = {
   },
   externals: ['axios', 'is-subset', 'lodash', /^lodash\/.+$/],
   module: {
-    rules: [{ test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' }],
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        include: /node_modules[/]axios[/]lib/,
+        use: 'babel-loader',
+      },
+    ],
   },
 };
