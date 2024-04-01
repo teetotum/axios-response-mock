@@ -252,32 +252,41 @@ test('string matcher with URL parameters', withMatcherAndParams('http://example.
 test('URL matcher with URL parameters', withMatcherAndParams(new URL('http://example.org?foo=bar')));
 
 test(
-  'string (data) response',
+  'response is string (data)',
   withResponse('bees buzz around', (res) => res.data === 'bees buzz around' && res.status === 200),
 );
 
 test(
-  'number 200 (status) response',
+  'response is number 200 (status)',
   withResponse(200, (res) => res.status === 200),
 );
 test(
-  'number 201 (status) response',
+  'response is number 201 (status)',
   withResponse(201, (res) => res.status === 201),
 );
 
 test(
-  'status code 204 response with matching message',
+  'response is number: status code 204 with matching message',
   withResponse(204, (res) => res.statusText === 'No Content'),
 );
 
 test(
-  'function (data) response',
+  'response is function (data)',
   withResponse(
     () => 'foobar',
     (res) => res.data === 'foobar' && res.status === 200,
   ),
 );
+
 test(
-  'object (data) response',
+  'response is object (payload data)',
   withResponse(pinocchioData, (res) => isEqual(res.data, pinocchioData) && res.status === 200),
+);
+
+test(
+  'response is object (response object)',
+  withResponse(
+    { status: 299, statusText: 'Quetzalcoatl', data: 'abc' },
+    (res) => res.status === 299 && res.statusText === 'Quetzalcoatl' && res.data === 'abc',
+  ),
 );

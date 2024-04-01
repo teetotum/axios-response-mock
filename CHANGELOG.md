@@ -19,8 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- todo: find out current state
-- to-be-done: fixed route matching with relative `url` (string matcher): is now using axios.baseURL to turn relative URL into absolute URL
+- fixed route matching with relative `url` (string matcher): is now using axios.baseURL to turn relative URL into absolute URL
 - fixed URL param matching for the edge case of having multiple params with the same name
 
 ## 0.2.1 - 2022-12-07
