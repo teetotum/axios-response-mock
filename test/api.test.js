@@ -290,3 +290,75 @@ test(
     (res) => res.status === 299 && res.statusText === 'Quetzalcoatl' && res.data === 'abc',
   ),
 );
+
+const relURL =
+  ({ matcher, axiosOptions, expectPassthrough }) =>
+  async (assert) => {
+    const axiosInstance = axios.create(axiosOptions);
+    axiosInstance.defaults.adapter = (conf) =>
+      new Promise((resolve, reject) => {
+        resolve({
+          data: 'PASSTHROUGH',
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: conf,
+          request: conf.request,
+        });
+      });
+
+    const mockInstance = responseMockBase.create(axiosInstance);
+
+    const expectedResponseData = 'lorem ipsum';
+    mockInstance.mock(matcher, expectedResponseData);
+
+    if (expectPassthrough) {
+      assert.plan(1);
+      try {
+        const response = await axiosInstance.request({
+          url: 'http://example.org/test/path',
+          method: 'get',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'X-Custom-Header': 'foobar',
+          },
+          params: {
+            ID: 12345,
+            foo: 'bar',
+          },
+        });
+
+        assert.equal(response.data, 'PASSTHROUGH');
+        assert.end();
+      } catch (e) {
+        assert.fail(e);
+      }
+    } else {
+      assert.plan(2);
+      try {
+        const response = await axiosInstance.request({
+          url: 'http://example.org/test/path',
+          method: 'get',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'X-Custom-Header': 'foobar',
+          },
+          params: {
+            ID: 12345,
+            foo: 'bar',
+          },
+        });
+        assert.equal(response.data, expectedResponseData);
+        assert.equal(response.status, 200);
+        assert.end();
+      } catch (e) {
+        assert.fail(e);
+      }
+    }
+  };
+
+test('matcher with relative URL - without baseURL', relURL({ matcher: 'test/path', expectPassthrough: true }));
+test(
+  'matcher with relative URL - with baseURL',
+  relURL({ matcher: 'test/path', axiosOptions: { baseURL: 'http://example.org/' } }),
+);

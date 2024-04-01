@@ -10,7 +10,7 @@ const getBaseURL = (axiosInstance) => {
   // instance setting:
   // axiosInstance.defaults.baseURL
 
-  // todo: matcher should not match if relative URL is used but no baseURL is set
+  // todo: matcher should not match if relative URL is used but no baseURL is set - done - see isValidURL
 
   // todo: write testcases for relative URL matching
 
@@ -23,6 +23,10 @@ const getBaseURL = (axiosInstance) => {
 
 const toURL = (urlString, axiosInstance) => {
   return new URL(urlString, getBaseURL(axiosInstance));
+};
+
+const isValidURL = (urlString, axiosInstance) => {
+  return URL.canParse(urlString, getBaseURL(axiosInstance));
 };
 
 // configParams are in the form of:
@@ -92,7 +96,11 @@ export const matchesAllCriteria = (route, config, axiosInstance) => {
   // check url
   if (route.criteria.url) {
     if (typeof route.criteria.url === 'string') {
-      if (toURL(route.criteria.url, axiosInstance).href !== toURL(config.url, axiosInstance).href) return false;
+      if (
+        !isValidURL(route.criteria.url, axiosInstance) ||
+        toURL(route.criteria.url, axiosInstance).href !== toURL(config.url, axiosInstance).href
+      )
+        return false;
     } else {
       if (route.criteria.url instanceof RegExp) {
         if (!route.criteria.url.test(config.url)) return false;
