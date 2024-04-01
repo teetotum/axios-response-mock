@@ -1,6 +1,6 @@
 # what do I need to do for the current release?
 
-## investigate 'originalAdapter is not a function' in the fallthrough scenario
+## investigate 'originalAdapter is not a function' in the passthrough scenario
 
 - in axios v 1.1.3 (and below) the original default adapter is a function
 - (in axios v 1.2.0-alpha.1 the original default adapter is still a function)
@@ -10,7 +10,7 @@ the change was introduced with `#5277` https://github.com/axios/axios/pull/5277
 (Changelog entry: `refactor: allowing adapters to be loaded by name #5277`)
 (merged November 22nd) and released with v1.2.0 on November 22nd
 
-If a custom adapter now wants to selectively decide which requests to handle itself and which requests to let fallthrough to the default adapter / delegate to the default adapter, how best would it now obtain a reference to the default adapter?
+If a custom adapter now wants to selectively decide which requests to handle itself and which requests to let passthrough to the default adapter / delegate to the default adapter, how best would it now obtain a reference to the default adapter?
 
 Before the change, a custom adapter could secure a reference to the default adapter via `axiosInstance.defaults.adapter` and call it later to delegate.
 

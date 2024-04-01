@@ -89,7 +89,6 @@ export const matchesAllCriteria = (route, config, axiosInstance) => {
     return false;
   }
 
-  // TODO: URL might not be supported by IE11
   // check url
   if (route.criteria.url) {
     if (typeof route.criteria.url === 'string') {

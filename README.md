@@ -27,7 +27,7 @@ const mock = mockBase.create();
 // PURGE requests, delay response by 1000 miliseconds
 
 mock
-  .get('http://example.org/users', { total: 2, users: [{ name: 'John Doe' }, { name: 'Richard Roe' }] })
+  .get('http://example.org/users', { total: 2, users: [{ name: 'Alice' }, { name: 'Bob' }] })
   .post(/[/]users[/]create/, 201)
   .get({ query: { ID: 'foobar' } }, foobarResponse)
   .put({ body: { address: {} }, matchPartialBody: true }, 200)
@@ -107,7 +107,8 @@ method,           // String (case-insensitive)
 headers,          // Object (hash) with key-value-pairs of type String (subset-match),
                      header keys are case-insensitive
 
-body,             // Object, deep-equal by default, but can be subset-match with the flag matchPartialBody
+body,             // Object, deep-equal by default,
+                     but can be subset-match with the flag matchPartialBody
 
 matchPartialBody, // boolean flag to trigger subset-match for body
 
@@ -180,7 +181,7 @@ to call JSON.parse(config.data) before you can make any assessments of it.
 
 The response can be defined in several ways:
 
-- <a name="string-response"></a>String
+- <a name="string-response" style="scroll-margin-top: 100px;"></a>String
 
   ```js
   mock.get(/example.com/, 'hello world');
@@ -196,7 +197,7 @@ The response can be defined in several ways:
   }
   ```
 
-- <a name="number-response"></a>Number
+- <a name="number-response" style="scroll-margin-top: 100px;"></a>Number
 
   ```js
   mock.get(/example.com/, 404);
@@ -211,7 +212,7 @@ The response can be defined in several ways:
   }
   ```
 
-- <a name="payload-object-response"></a>Object: payload data
+- <a name="payload-object-response" style="scroll-margin-top: 100px;"></a>Object representing _payload data_
 
   ```js
   mock.get(/example.com/, { name: 'Richard Roe', registeredSince: '2010-06-12' });
@@ -227,12 +228,12 @@ The response can be defined in several ways:
   }
   ```
 
-- <a name="response-object-response"></a>Object: response
-  An object is treated as a response when it has `status` and `statusText` properties.
-  Thus you can provide arbitrary `status`, `statusText`, `data`, `headers` used for the mock response.
+- <a name="response-object-response" style="scroll-margin-top: 100px;"></a>Object representing a _response object_\
+  An object is treated as a _response object_ when it has `status` and `statusText` properties.
+  Thus you can provide arbitrary `status`, `statusText`, `data`, and `headers` used for the mock response.
 
   ```js
-  mock.get(/example.com/, { status: 200, statusText: 'OK', headers: { 'X-custom-encabulator': '7B' } });
+  mock.get(/example.com/, { status: 200, statusText: 'OK', headers: { 'X-Encabulator': '7B' } });
   ```
 
   When matched: will return a response as specified
@@ -241,17 +242,17 @@ The response can be defined in several ways:
   {
     status: 200,
     statusText: 'OK',
-    headers: { 'X-custom-encabulator': '7B' },
+    headers: { 'X-Encabulator': '7B' },
   }
   ```
 
-- <a name="function-response"></a>Function
+- <a name="function-response" style="scroll-margin-top: 100px;"></a>Function
 
   ```js
   mock.get(/example.com/, (config) => (Math.random() < 0.5 ? 200 : 404));
   ```
 
-  When matched: will call the function; the return value of the function determines how a response is derived from it:
+  When matched: will call the function; the return value of which determines how a response is derived from it:
 
   - [string](#string-response),
   - [number](#number-response),

@@ -1,4 +1,4 @@
-import axios, { getAdapter } from 'axios';
+import { getAdapter } from 'axios';
 import { deriveResponse, settle } from './response';
 import { matchesAllCriteria } from './match';
 
