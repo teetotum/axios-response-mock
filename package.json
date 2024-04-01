@@ -1,6 +1,6 @@
 {
   "name": "axios-response-mock",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A library to be used with axios to selectively provide mock responses for any requests that are to be sent via the axios API.",
   "keywords": [
     "axios",
@@ -35,6 +35,6 @@
     "babel-tape-runner": "3.0.0"
   },
   "peerDependencies": {
-    "axios": "*"
+    "axios": "^1.5.0"
   }
 }

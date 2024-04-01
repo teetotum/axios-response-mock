@@ -1,3 +1,4 @@
+import axios, { getAdapter } from 'axios';
 import { deriveResponse, settle } from './response';
 import { matchesAllCriteria } from './match';
 
@@ -23,7 +24,16 @@ export class Mock {
     const matchedRoute = this.preparedRoutes.find((route) => matchesAllCriteria(route, config, this.axiosInstance));
 
     if (matchedRoute) return this._respond(matchedRoute, config);
-    else return this.originalAdapter(config);
+    else return this._passthrough(config);
+  }
+
+  _passthrough(config) {
+    if (typeof this.originalAdapter === 'function') {
+      return this.originalAdapter(config);
+    } else {
+      const defaultAdapter = getAdapter(this.originalAdapter);
+      return defaultAdapter(config);
+    }
   }
 
   restore() {
