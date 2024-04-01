@@ -32,6 +32,8 @@ and it seems others are also in need of this https://github.com/Gerhut/axiosist/
 
 some ideas for how to obtain the xhr adapter can be found here https://github.com/axios/axios/issues/2968
 
+study this fix and see if I can just do the same: https://github.com/ctimmerm/axios-mock-adapter/pull/363/files
+
 What options do we have now?
 
 - re-implement and ship my own xhr adapter? no, not feasible.
