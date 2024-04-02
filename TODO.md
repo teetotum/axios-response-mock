@@ -9,3 +9,4 @@
 - allow logging per route options
 - ensure API documentation covers API surface
 - ensure tests cover API surface
+- document options object

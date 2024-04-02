@@ -1,7 +1,7 @@
 # axios-response-mock
 
 The axios-response-mock is intended to be for [axios](https://github.com/axios/axios) what [fetch-mock](https://github.com/wheresrhys/fetch-mock) is for the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
-The mock can be configured to selectively intercept requests that are made via axios and answer those intercepted requests with prepared mock responses. Unmatched requests will -per default- be processed normally.
+The mock can be configured to selectively intercept requests that are made via axios and answer those intercepted requests with prepared mock responses. Unmatched requests will by default be processed normally.
 
 axios-response-mock uses the [axios adapter](https://github.com/axios/axios/tree/master/lib/adapters) mechanism.
 
@@ -177,27 +177,86 @@ to call JSON.parse(config.data) before you can make any assessments of it.
 }
 ```
 
+### Matcher
+
+A variety of different matchers is supported; matchers can be combined (e.g. to test both request URL and body).
+
+- String: a string as the matcher is tested against the request URL (testing for `equals`). If the provided matcher string is not an absolute URL the configured `baseURL` from axios is combined with the provided URL; the resulting absolute URL is tested against the request URL. Note: merging behavior of the relative URL and the base URL is identical to merging behavior of [URL constructor](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL). If no `baseURL` is configured a relative URL string matcher can never match.
+  ```js
+  const axiosInstance = axios.create({ baseURL: 'http://example.org/api/v1/' });
+  const mock = responseMockBase.create(axiosInstance);
+  mock.get('products/p7845', { name: 'encabulator', stock: 7 });
+  // will match GET requests with URL 'http://example.org/api/v1/products/p7845'
+  ```
+- URL: a [URL](https://developer.mozilla.org/en-US/docs/Web/API/URL) instance as the matcher is tested against the request URL by obtaining the resulting `href` (testing for `equals`).
+- RegEx: a [RegEx](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) as the matcher is tested against the request URL by calling its `.test()` method.
+- Function: a function as the matcher (`(config) => boolean`) can test anything related to the current request or even use extenal information. It is called with the current request configuration and expected to return `true` to indicate a match and `false` otherwise.\
+  The config object argument for a function matcher has this structure:
+  ```js
+  {
+    url: 'http://example.org',
+    method: 'get',
+    params: { ID: 12345, foo: 'bar' },
+    data: '{ "firstName" : "Fred", "lastName" : "Flintstone" }',
+    headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=utf-8',
+        'X-Custom-Header': 'foobar',
+    },
+  }
+  ```
+  Be aware that the `data` field is stringified. If your request data is JSON you will need to call `JSON.parse(config.data)` before you can make any assessments of it.
+- Object: an object as the matcher must at least have one matching related property (url, functionMatcher, method, headers, body (with or without matchPartialBody), query, repeat); can combine different matchers; and can contain options related to how the response is to be generated (response, delay).\
+  The supported properties in the matcher object are:
+
+  ```
+  url, // String (exact match), URL (exact match), RegEx (full regex functionality)
+
+  functionMatcher, // (config) => boolean
+
+  method, // String (case-insensitive)
+
+  headers, // Object (hash) with key-value-pairs of type String (subset-match),
+              header keys are case-insensitive
+
+  body, // Object, deep-equal by default,
+           but can be subset-match with the flag matchPartialBody
+
+  matchPartialBody, // boolean flag to trigger subset-match for body
+
+  query, // Object (hash) with key-value-pairs of type String (subset-match),
+            case-sensitive for keys and values
+
+  repeat, // number of times the route can match,
+             after the number is reached the route will not match anymore
+
+  response, // can be used when the response argument to .mock() is omitted
+               (same supported argument types)
+
+  delay, // number: response delay in miliseconds
+  ```
+
 #### Response
 
 The response can be defined in several ways:
 
-- <a name="string-response" style="scroll-margin-top: 100px;"></a>String
+- <a name="string-response"></a>String
 
-  ```js
-  mock.get(/example.com/, 'hello world');
-  ```
+```js
+mock.get(/example.com/, 'hello world');
+```
 
-  When matched: will return a success response with the string as payload data
+When matched: will return a success response with the string as payload data
 
-  ```js
-  {
-    status: 200,
-    statusText: 'OK',
-    data: 'hello world',
-  }
-  ```
+```js
+{
+  status: 200,
+  statusText: 'OK',
+  data: 'hello world',
+}
+```
 
-- <a name="number-response" style="scroll-margin-top: 100px;"></a>Number
+- <a name="number-response"></a>Number
 
   ```js
   mock.get(/example.com/, 404);
@@ -212,7 +271,7 @@ The response can be defined in several ways:
   }
   ```
 
-- <a name="payload-object-response" style="scroll-margin-top: 100px;"></a>Object representing _payload data_
+- <a name="payload-object-response"></a>Object representing _payload data_
 
   ```js
   mock.get(/example.com/, { name: 'Richard Roe', registeredSince: '2010-06-12' });
@@ -228,7 +287,7 @@ The response can be defined in several ways:
   }
   ```
 
-- <a name="response-object-response" style="scroll-margin-top: 100px;"></a>Object representing a _response object_\
+- <a name="response-object-response"></a>Object representing a _response object_\
   An object is treated as a _response object_ when it has `status` and `statusText` properties.
   Thus you can provide arbitrary `status`, `statusText`, `data`, and `headers` used for the mock response.
 
@@ -246,7 +305,7 @@ The response can be defined in several ways:
   }
   ```
 
-- <a name="function-response" style="scroll-margin-top: 100px;"></a>Function
+- <a name="function-response"></a>Function
 
   ```js
   mock.get(/example.com/, (config) => (Math.random() < 0.5 ? 200 : 404));
