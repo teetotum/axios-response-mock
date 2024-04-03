@@ -5,21 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.3.0 - 2024-04-01
+## 0.3.0 - 2024-04-03
 
-### Fixed
+### Added
 
-- passthrough scenario (was broken since axios v1.2.0)
+- added more documentation for `matcher`, `response`, and `options` parameters
 
 ### Changed
 
-- min version for axios as a required peer dependency increased to v1.5.0 (exports `getAdapter`)
+- changed min version for axios as a required peer dependency increased to v1.5.0 (exports `getAdapter`)
+
+### Fixed
+
+- fixed passthrough scenario (was broken since axios v1.2.0)
 
 ## 0.2.2 - 2022-12-29
 
 ### Fixed
 
-- fixed route matching with relative `url` (string matcher): is now using axios.baseURL to turn relative URL into absolute URL
+- fixed route matching with relative `url` (string matcher): is now using `axios.baseURL` to turn relative URL into absolute URL
 - fixed URL param matching for the edge case of having multiple params with the same name
 
 ## 0.2.1 - 2022-12-07

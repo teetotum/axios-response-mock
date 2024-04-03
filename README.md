@@ -94,56 +94,11 @@ can only be omitted when 'response' property is set in matcher object
 
 options: Object
 is optional
-
-
-supported properties in matcher object:
-
-url,              // String (exact match), URL (exact match), RegEx (full regex functionality)
-
-functionMatcher,  // (config) => boolean
-
-method,           // String (case-insensitive)
-
-headers,          // Object (hash) with key-value-pairs of type String (subset-match),
-                     header keys are case-insensitive
-
-body,             // Object, deep-equal by default,
-                     but can be subset-match with the flag matchPartialBody
-
-matchPartialBody, // boolean flag to trigger subset-match for body
-
-query,            // Object (hash) with key-value-pairs of type String (subset-match),
-                     case-sensitive for keys and values
-
-repeat,           // number of times the route can match,
-                     after the number is reached the route will not match anymore
-
-response,         // can be used when the response argument to .mock() is omitted
-                     (same supported argument types)
-
-delay,            // number: response delay in miliseconds
-
-
-config object argument for functionMatcher has this structure:
-{
-    url: 'http://example.org',
-    method: 'get',
-    params: { ID: 12345, foo: 'bar' },
-    data: '{ "firstName" : "Fred", "lastName" : "Flintstone" }',
-    headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json;charset=utf-8',
-        'X-Custom-Header': 'foobar',
-    },
-}
-
-Be aware that the 'data' field is stringified. If your request data is JSON you will need
-to call JSON.parse(config.data) before you can make any assessments of it.
 ```
 
-```
-// the following functions are just a shorthand for the .mock() function
+the following functions are just a shorthand for the `.mock()` function
 
+```
 .get(matcher, response, options) {
   return this.mock(matcher, response, { ...options, method: "GET" });
 }
@@ -177,7 +132,7 @@ to call JSON.parse(config.data) before you can make any assessments of it.
 }
 ```
 
-### Matcher
+#### Matcher
 
 A variety of different matchers is supported; matchers can be combined (e.g. to test both request URL and body).
 
@@ -210,30 +165,30 @@ A variety of different matchers is supported; matchers can be combined (e.g. to 
   The supported properties in the matcher object are:
 
   ```
-  url, // String (exact match), URL (exact match), RegEx (full regex functionality)
+  url,              // String (exact match), URL (exact match), RegEx (full regex functionality)
 
-  functionMatcher, // (config) => boolean
+  functionMatcher,  // (config) => boolean
 
-  method, // String (case-insensitive)
+  method,           // String (case-insensitive)
 
-  headers, // Object (hash) with key-value-pairs of type String (subset-match),
-              header keys are case-insensitive
+  headers,          // Object (hash) with key-value-pairs of type String (subset-match),
+                       header keys are case-insensitive
 
-  body, // Object, deep-equal by default,
-           but can be subset-match with the flag matchPartialBody
+  body,             // Object, deep-equal by default,
+                       but can be subset-match with the flag matchPartialBody
 
   matchPartialBody, // boolean flag to trigger subset-match for body
 
-  query, // Object (hash) with key-value-pairs of type String (subset-match),
-            case-sensitive for keys and values
+  query,            // Object (hash) with key-value-pairs of type String (subset-match),
+                       case-sensitive for keys and values
 
-  repeat, // number of times the route can match,
-             after the number is reached the route will not match anymore
+  repeat,           // number of times the route can match,
+                       after the number is reached the route will not match anymore
 
-  response, // can be used when the response argument to .mock() is omitted
-               (same supported argument types)
+  response,         // can be used when the response argument to .mock() is omitted
+                       (same supported argument types)
 
-  delay, // number: response delay in miliseconds
+  delay,            // number: response delay in miliseconds
   ```
 
 #### Response
@@ -318,3 +273,9 @@ When matched: will return a success response with the string as payload data
   - [object as payload data](#payload-object-response),
   - [object as response](#response-object-response),
   - or even another [function](#function-response)
+
+#### Options
+
+If you are using a matcher object you can set all options directly in the matcher object.
+The options object structure is identical to the matcher object structure.
+If you provide both the two objects are merged; properties on the matcher object overrule properties with the same name on the options object.
